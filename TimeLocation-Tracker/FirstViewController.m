@@ -17,7 +17,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-  
+    _mapView.delegate = self;
+    _mapView.mapType = MKMapTypeHybrid;
 
     self.locationManager= [[CLLocationManager alloc] init];
     self.locationManager.delegate=self;
@@ -54,6 +55,15 @@
 - (NSString *)deviceLocation {
     return [NSString stringWithFormat:@"latitude: %f longitude: %f", self.locationManager.location.coordinate.latitude, self.locationManager.location.coordinate.longitude];
 }
+
+//methode wird eigentlich nicht benötigt, da wir uns ja nie bewegen werden
+
+//- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
+//    //
+//    NSLog(@"location changed");
+//    _mapView.centerCoordinate = userLocation.location.coordinate;
+//}
+
 
 - (void)updateLocation{
     MKCoordinateRegion region = { { 0.0, 0.0 }, { 0.0, 0.0 } };
