@@ -16,12 +16,51 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+
+  
+
+    self.locationManager= [[CLLocationManager alloc] init];
+    self.locationManager.delegate=self;
+    [self.locationManager requestAlwaysAuthorization];
+    
+    [self.locationManager startUpdatingLocation];
+    _mapView.showsUserLocation = YES;
+    
+    [self updateLocation];
+
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:YES];
+    
+    self.locationManager.distanceFilter = kCLDistanceFilterNone;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [self.locationManager startUpdatingLocation];
+    NSLog(@"%@", [self deviceLocation]);
+    
+    //View Area
+    [self updateLocation];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+
+- (NSString *)deviceLocation {
+    return [NSString stringWithFormat:@"latitude: %f longitude: %f", self.locationManager.location.coordinate.latitude, self.locationManager.location.coordinate.longitude];
+}
+
+- (void)updateLocation{
+    MKCoordinateRegion region = { { 0.0, 0.0 }, { 0.0, 0.0 } };
+    region.center.latitude = self.locationManager.location.coordinate.latitude;
+    region.center.longitude = self.locationManager.location.coordinate.longitude;
+    [_mapView setRegion:region animated:YES];
+
 }
 
 @end
